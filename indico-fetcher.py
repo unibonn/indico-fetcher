@@ -36,6 +36,7 @@ if __name__ == '__main__':
     EVENT_ID = config['event_id']
     PATH = '/export/event/%d.json' % EVENT_ID
     DISPLAY_SECS_IN_TIME_SLOT = config['display_secs_in_time_slot']
+    LIMIT_FILE_SIZE = config['limit_file_size']
     PARAMS = {
         'limit': config['limit'],
         'detail': 'contributions'
@@ -96,7 +97,12 @@ if __name__ == '__main__':
                 if not os.path.isfile(full_filename):
                     print('Downloading: ' + full_filename)
                     try:
-                        urllib.request.urlretrieve(attachment['download_url'], full_filename)
+                        download_url = attachment['download_url']
+                        file_size = urllib.request.urlopen(download_url).length
+                        if file_size > LIMIT_FILE_SIZE:
+                            print(f"File size of {full_filename} is beyond configured limit. Ignoring this file.")
+                            continue
+                        urllib.request.urlretrieve(download_url, full_filename)
                     except Exception as exc:
                         print(exc)
                         print('  Encountered unknown error. Continuing.')
