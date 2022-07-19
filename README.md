@@ -1,4 +1,6 @@
 # indico-fetcher
+[![Test Indico fetcher](https://github.com/unibonn/indico-fetcher/actions/workflows/test.yml/badge.svg)](https://github.com/unibonn/indico-fetcher/actions/workflows/test.yml)
+
 Utility to fetch contributions to [Indico](https://getindico.io/) attachments and store them in a structured manner.
 
 This tool fetches an Indico event and stores the files in a structure such as:
@@ -22,7 +24,7 @@ Using such an approach noticeably reduces the handover time between talks.
 
 This project is still in its early stages, notably, it is still missing many basics:
 * Error handling
-* CI
+* More extensive CI
 * Commandline argument handling
 
 Contributions are very welcome!
