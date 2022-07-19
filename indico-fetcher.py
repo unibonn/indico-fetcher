@@ -35,10 +35,12 @@ if __name__ == '__main__':
     INDICO_INSTANCE = config['indico_instance']
     EVENT_ID = config['event_id']
     PATH = '/export/event/%d.json' % EVENT_ID
+    DISPLAY_SECS_IN_TIME_SLOT = config['display_secs_in_time_slot']
     PARAMS = {
         'limit': config['limit'],
         'detail': 'contributions'
     }
+
     request_path = build_indico_request(PATH, PARAMS)
     req = exec_request(INDICO_INSTANCE, request_path)
     try:
@@ -72,7 +74,10 @@ if __name__ == '__main__':
         except FileExistsError:
             pass
 
-        slot = contrib['startDate']['time'] + "_" + contrib['endDate']['time']
+        if DISPLAY_SECS_IN_TIME_SLOT is True:
+            slot = contrib['startDate']['time'] + "_" + contrib['endDate']['time']
+        else:
+            slot = contrib['startDate']['time'][:-3] + "_" + contrib['endDate']['time'][:-3]
         fulldir += "/" + slot
         try:
             os.mkdir(fulldir)
