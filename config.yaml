@@ -1,3 +1,4 @@
 indico_instance: https://indico.hiskp.uni-bonn.de
 event_id: 3
 limit: 500
+display_secs_in_time_slot: False
