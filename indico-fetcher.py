@@ -8,6 +8,7 @@ import time
 import urllib.request
 import requests
 import dateutil.parser
+import yaml
 
 try:
     from urllib.parse import urlencode
@@ -26,11 +27,16 @@ def exec_request(indico_instance, request_path):
     return req
 
 if __name__ == '__main__':
-    INDICO_INSTANCE = 'https://indico.hiskp.uni-bonn.de'
-    EVENT_ID = 3
+    with open("config.yaml", "r") as stream:
+        try:
+            config = yaml.safe_load(stream)
+        except yaml.YAMLError as exc:
+            print(exc)
+    INDICO_INSTANCE = config['indico_instance']
+    EVENT_ID = config['event_id']
     PATH = '/export/event/%d.json' % EVENT_ID
     PARAMS = {
-        'limit': 500,
+        'limit': config['limit'],
         'detail': 'contributions'
     }
     request_path = build_indico_request(PATH, PARAMS)
