@@ -4,6 +4,7 @@
 
 import json
 import os
+import sys
 import time
 import urllib.request
 import requests
@@ -53,7 +54,11 @@ if __name__ == '__main__':
         jresp = json.loads(req.content)
     except:
         print("Error parsing JSON response!")
-        os.exit(1)
+        sys.exit(1)
+
+    if not jresp['results']:
+        print("Error: Zero contributions found! This might be caused by lack of permissions.")
+        sys.exit(1)
 
     for contrib in jresp['results'][0]['contributions']:
         if 'startDate' not in contrib:
@@ -72,7 +77,7 @@ if __name__ == '__main__':
             room = contrib['room'].split().pop(-1)
         except:
             room = contrib['room']
-  
+
         if len(room) > 0:
             fulldir += "/" + room
         try:
@@ -111,4 +116,3 @@ if __name__ == '__main__':
                     except Exception as exc:
                         print(exc)
                         print('  Encountered unknown error. Continuing.')
-  
