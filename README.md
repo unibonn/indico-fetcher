@@ -28,3 +28,9 @@ This project is still in its early stages, notably, it is still missing many bas
 * Commandline argument handling
 
 Contributions are very welcome!
+
+## Events or contributions which require authentication
+
+To download contributions for which authentication is required, there are two possibilities:
+* Whitelist the IP address of the system fetching the contributions in Indico.
+* Create an "API token" via your user preferences in the section "API tokens". The token needs "Classic API (read only)" scope. Finally, set the token as `auth_token` in the config file.

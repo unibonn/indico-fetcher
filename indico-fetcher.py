@@ -23,6 +23,8 @@ def build_indico_request(path, params):
 
 def exec_request(indico_instance, request_path):
     req_headers = {'Accept': 'application/json', 'Content-Type': 'application/json'}
+    if AUTH_TOKEN is not None:
+        req_headers['Authorization'] = 'Bearer ' + AUTH_TOKEN
     req = requests.get(indico_instance + request_path, headers=req_headers)
     return req
 
@@ -37,6 +39,9 @@ if __name__ == '__main__':
     PATH = '/export/event/%d.json' % EVENT_ID
     DISPLAY_SECS_IN_TIME_SLOT = config['display_secs_in_time_slot']
     LIMIT_FILE_SIZE = config['limit_file_size']
+    AUTH_TOKEN = None
+    if 'auth_token' in config:
+        AUTH_TOKEN = config['auth_token']
     PARAMS = {
         'limit': config['limit'],
         'detail': 'contributions'
