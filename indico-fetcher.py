@@ -39,7 +39,9 @@ if __name__ == '__main__':
     EVENT_ID = config['event_id']
     PATH = '/export/event/%d.json' % EVENT_ID
     DISPLAY_SECS_IN_TIME_SLOT = config['display_secs_in_time_slot']
-    LIMIT_FILE_SIZE = config['limit_file_size']
+    LIMIT_FILE_SIZE = None
+    if 'limit_file_size' in config:
+        LIMIT_FILE_SIZE = config['limit_file_size']
     AUTH_TOKEN = None
     if 'auth_token' in config:
         AUTH_TOKEN = config['auth_token']
@@ -97,6 +99,8 @@ if __name__ == '__main__':
 
         folders = contrib['folders']
 
+        SERVER_REPORTS_FILESIZE = True
+
         for folder in folders:
             for attachment in folder['attachments']:
                 mod = attachment['modified_dt']
@@ -108,10 +112,17 @@ if __name__ == '__main__':
                     print('Downloading: ' + full_filename)
                     try:
                         download_url = attachment['download_url']
-                        file_size = urllib.request.urlopen(download_url).length
-                        if file_size > LIMIT_FILE_SIZE:
-                            print(f"File size of {full_filename} is beyond configured limit. Ignoring this file.")
-                            continue
+                        if (LIMIT_FILE_SIZE is not None) and SERVER_REPORTS_FILESIZE:
+                            file_meta = urllib.request.urlopen(download_url).info()
+                            if file_meta.get_all("Content-Length") is None:
+                                # Can happen if server uses chunked encoding, for example.
+                                SERVER_REPORTS_FILESIZE = False
+                                print("Can not check file sizes, server does not report size in advance, ignoring limit!")
+                            else:
+                                file_size = int(file_meta.get_all("Content-Length")[0])
+                                if file_size > LIMIT_FILE_SIZE:
+                                    print(f"File size of {full_filename} is beyond configured limit. Ignoring this file.")
+                                    continue
                         urllib.request.urlretrieve(download_url, full_filename)
                     except Exception as exc:
                         print(exc)

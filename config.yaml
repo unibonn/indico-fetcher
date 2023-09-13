@@ -2,5 +2,6 @@ indico_instance: https://indico.hiskp.uni-bonn.de
 event_id: 3
 auth_token:
 limit: 500
-limit_file_size: 10737418240 #limit file size (in bytes) currently set to 10GB
+# limit file size (in bytes), e.g. 10GB, note not all servers report this in advance
+limit_file_size: 10737418240
 display_secs_in_time_slot: False
