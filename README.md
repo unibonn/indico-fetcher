@@ -33,4 +33,4 @@ Contributions are very welcome!
 
 To download contributions for which authentication is required, there are two possibilities:
 * Whitelist the IP address of the system fetching the contributions in Indico.
-* Create an "API token" via your user preferences in the section "API tokens". The token needs "Classic API (read only)" scope. Finally, set the token as `auth_token` in the config file.
+* Create an "API token" via your user preferences in the section "API tokens". The token needs at least the "Classic API (read only)" scope, and potentially also "Everything (only GET)". Finally, set the token as `auth_token` in the config file.
