@@ -101,6 +101,11 @@ if __name__ == '__main__':
 
         SERVER_REPORTS_FILESIZE = True
 
+        if AUTH_TOKEN is not None:
+            download_opener = urllib.request.build_opener()
+            download_opener.addheaders = [('Authorization', 'Bearer '+AUTH_TOKEN)]
+            urllib.request.install_opener(download_opener)
+
         for folder in folders:
             for attachment in folder['attachments']:
                 mod = attachment['modified_dt']
