@@ -111,6 +111,9 @@ if __name__ == '__main__':
                 mod = attachment['modified_dt']
                 mtime = dateutil.parser.parse(mod)
                 mtimets = int(time.mktime(mtime.timetuple()))
+                if attachment['type'] != 'file':
+                    print('Skipping non-file attachment...')
+                    continue
                 full_filename = fulldir + "/" + str(mtimets) + "_" + attachment['filename']
 
                 if not os.path.isfile(full_filename):
