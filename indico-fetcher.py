@@ -91,6 +91,8 @@ if __name__ == '__main__':
             slot = contrib['startDate']['time'] + "_" + contrib['endDate']['time']
         else:
             slot = contrib['startDate']['time'][:-3] + "_" + contrib['endDate']['time'][:-3]
+        # Some OSs and FSs don't like colons:
+        slot = slot.replace(':', '.')
         fulldir += "/" + slot
         try:
             os.mkdir(fulldir)
