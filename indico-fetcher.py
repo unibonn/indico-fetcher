@@ -115,7 +115,7 @@ if __name__ == '__main__':
                 mtime = dateutil.parser.parse(mod)
                 mtimets = int(time.mktime(mtime.timetuple()))
                 if attachment['type'] != 'file':
-                    print('Skipping non-file attachment...')
+                    print(f"Skipping non-file attachment (type: {attachment['type']})...")
                     continue
                 # Remove any bad characters from filenames:
                 sanitized_filename = re.sub('[^\w\.\s-]', '', attachment['filename'])
