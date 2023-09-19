@@ -4,6 +4,7 @@
 
 import json
 import os
+import re
 import sys
 import time
 import urllib.request
@@ -116,7 +117,9 @@ if __name__ == '__main__':
                 if attachment['type'] != 'file':
                     print('Skipping non-file attachment...')
                     continue
-                full_filename = fulldir + "/" + str(mtimets) + "_" + attachment['filename']
+                # Remove any bad characters from filenames:
+                sanitized_filename = re.sub('[^\w\.\s-]', '', attachment['filename'])
+                full_filename = fulldir + "/" + str(mtimets) + "_" + sanitized_filename
 
                 if not os.path.isfile(full_filename):
                     print('Downloading: ' + full_filename)
